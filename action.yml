@@ -1,6 +1,10 @@
 name: action-genai-video-issue-analyzer
 description: Analyzes videos upload as assets
 inputs:
+  script:
+    description: The script to run (action-video-issue-analyzer or action-video-slide-deck-annotator).
+    required: false
+    default: action-video-issue-analyzer
   instructions:
     description: Custom prompting instructions for each video.
     required: false
