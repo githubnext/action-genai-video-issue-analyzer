@@ -10,6 +10,22 @@ The default behavior is to summarize and extract task items but this can be cust
 - **action-video-issue-analyzer** (default): Analyzes videos for general content summary and task extraction
 - **action-video-slide-deck-annotator**: Detects slide transitions in presentation videos and generates structured timestamps
 
+## Supported Video Sources
+
+The action supports videos from multiple sources:
+
+### GitHub User Attachments (Default)
+Standard GitHub issue attachments uploaded via the web interface:
+- `https://github.com/user-attachments/assets/...`
+
+### Git Large File Storage (LFS)
+For large video files stored in Git LFS, the action supports:
+- **Raw files**: `https://github.com/user/repo/raw/branch/video.mp4`
+- **Release downloads**: `https://github.com/user/repo/releases/download/tag/video.mp4`  
+- **Blob files**: `https://github.com/user/repo/blob/branch/path/video.mp4`
+
+The action automatically detects the source type and uses appropriate download methods. For large files (>500MB), progress warnings are displayed during processing.
+
 ## Inputs
 
 - `script`: The script to run (action-video-issue-analyzer or action-video-slide-deck-annotator). **(optional, defaults to action-video-issue-analyzer)**
