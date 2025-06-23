@@ -3,8 +3,16 @@
 This GitHub Action runs all video assets in an issue body through a LLM model to analyze the content.
 The default behavior is to summarize and extract task items but this can be customized through the `prompt` input.
 
+**New**: The action now supports slide deck analysis with the `action-video-slide-deck-annotator` script that detects slide transitions and generates timestamps for presentations.
+
+## Scripts Available
+
+- **action-video-issue-analyzer** (default): Analyzes videos for general content summary and task extraction
+- **action-video-slide-deck-annotator**: Detects slide transitions in presentation videos and generates structured timestamps
+
 ## Inputs
 
+- `script`: The script to run (action-video-issue-analyzer or action-video-slide-deck-annotator). **(optional, defaults to action-video-issue-analyzer)**
 - `github_token`: GitHub token with `models: read` permission at least. **(required)**
 - `instructions`: Custom prompt to use for the LLM model. If not provided, a default prompt will be used.
 - `github_issue`: The issue number to analyze. Typically this variable is inferred from the event context.
@@ -36,6 +44,47 @@ It will launch a whisper service in a container that can be used by genaiscript.
       - uses: pelikhan/action-genai-video-issue-analyzer@v0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+## Slide Deck Annotator Usage
+
+To use the slide deck annotator for detecting slide transitions in presentation videos:
+
+```yaml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pelikhan/action-genai-video-issue-analyzer@v0
+        with:
+          script: action-video-slide-deck-annotator
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+The slide deck annotator will output structured JSON with:
+- Video duration
+- Slide transition timestamps with confidence scores
+- Recommended 2-minute viewing segments for each slide
+
+Example output:
+```json
+{
+  "video_duration": "01:23:45",
+  "slide_transitions": [
+    {
+      "timestamp": "00:02:15",
+      "confidence": 0.95,
+      "slide_number": 1,
+      "description": "Title slide to agenda"
+    }
+  ],
+  "recommended_segments": [
+    {
+      "start": "00:00:00",
+      "end": "00:02:00", 
+      "slide": 1,
+      "description": "First 2 minutes of title slide"
+    }
+  ]
+}
 ```
 
 ## Example
