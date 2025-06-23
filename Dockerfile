@@ -15,8 +15,11 @@ WORKDIR /genaiscript/action
 # Copy source code
 COPY . .
 
+# Make entrypoint script executable
+RUN chmod +x entrypoint.sh
+
 # Install dependencies
 RUN npm ci
 
 # GitHub Action forces the WORKDIR to GITHUB_WORKSPACE 
-ENTRYPOINT ["npm", "--prefix", "/genaiscript/action", "start"]
+ENTRYPOINT ["./entrypoint.sh"]

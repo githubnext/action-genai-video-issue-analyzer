@@ -1,12 +1,19 @@
 name: action-genai-video-issue-analyzer
 description: Analyzes videos upload as assets
 inputs:
+  script:
+    description: The script to run (action-video-issue-analyzer or action-video-slide-deck-annotator).
+    required: false
+    default: action-video-issue-analyzer
   instructions:
     description: Custom prompting instructions for each video.
     required: false
     default: Analyze the video and provide a summary of its content. Extract list of
       followup subissues if any. The transcript is your primary source of text
       information, ignore text in images.
+  video_file_path:
+    description: Path to the video file in the repository (for slide deck annotator).
+    required: false
   github_token:
     description: "GitHub token with `models: read` permission at least
       (https://microsoft.github.io/genaiscript/reference/github-actions/#github\
